@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Share Your Thoughts</title>
+		<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet2.css') }}">
+	</head>
+	<body>
+		<div class="center_nav_bar">
+		  <ul>
+			<li><a class="home_active_color" href="\">Welcome Page</a></li>
+			<li><a href="form1">Your Digital Day</a></li>
+			<li><a href="form2">Share Your Thoughts</a></li>
+		  </ul>
+		</div>
+        
+        <div class="box">
+            <div class="center">
+        <h1>Share your experience with this website!</h1>
+        <br>
+
+        <!-- Screen time and feedback input -->
+        <label for="ScreenTimeInteger">What is your screen time on your device?</label><br>
+	  <input type="text" id="ScreenTimeString" placeholder="Enter screen time in hours" />
+	  <br>
+      <label for="ScreenTimeBoolean">Do you think your screen time affects your health?</label><br>
+	  <input type="text" id="yesNoIn" placeholder="Enter Y or N" />
+	  <br>
+	  <button class="button" type="button" onclick="insertRecord()">Insert Record</button>
+
+	  <p id="feedbackMessage"></p>
+      <h1>User Feedback and Average Screen <Time></Time></h1>
+      <div class="inner_box">
+        <button class="button" type="button" onclick="displayRecords()">Display Feedback</button>
+        <div id="allRecords">
+        </div>
+        <div id="averageScreenTime">
+        </div>  
+	  </div>
+  </div>
+</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
+    import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
+
+    // configuration code from my Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyCQ1A27_IyJIXf2DbZc6h3qfLF-h7139MA",
+        authDomain: "cs-project-2025-e51b0.firebaseapp.com",
+        databaseURL: "https://cs-project-2025-e51b0-default-rtdb.firebaseio.com",
+        projectId: "cs-project-2025-e51b0",
+        storageBucket: "cs-project-2025-e51b0.firebasestorage.app",
+        messagingSenderId: "1071706249506",
+        appId: "1:1071706249506:web:108b3385fb4ae2e259ad7b",
+        measurementId: "G-TL83WCVG9C"
+      };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const myDB = ref(getDatabase(), "feedback");
+
+    // Function to insert a feedback record
+    window.insertRecord = function () {
+      const screenTimeInput = document.getElementById("ScreenTimeString").value; 
+      const yesNoInput = document.getElementById("yesNoIn").value.toUpperCase();
+      const feedbackMessage = document.getElementById("feedbackMessage");
+
+      // Validate screen time input (user input must be a positive number (integer) )
+      const screenTime = parseFloat(screenTimeInput);
+      if (isNaN(screenTime) || screenTime <= 0) {
+        // An error message appears if user input is invalid 
+        feedbackMessage.innerText = "Invalid screen time. Please enter a positive number.";
+        return;
+      } 
+
+      // Validate Yes/No input (user input must be 'Y'or 'N')
+      if (yesNoInput !== "Y" && yesNoInput !== "N") {
+        // An error message appears if user input is invalid
+        feedbackMessage.innerText = "Invalid response. Please enter Y or N.";
+        return;
+      }
+
+      // Reset the feedback message
+      feedbackMessage.innerText = "Submitting feedback...";
+
+      // Add the record to the database
+      const newRecord = push(ref(getDatabase(), "feedback"));
+      const record = {
+        screenTime: screenTime,
+        yesno: yesNoInput
+      };
+
+      // Save record to the database
+      set(newRecord, record)
+        .then(() => {
+          feedbackMessage.innerText = "Feedback submitted successfully! Thank you for interacting.";
+        })
+        .catch((error) => {
+          feedbackMessage.innerText = `Error: ${error.message}`;
+        });
+    };
+
+    // Function to display records and calculate the average screen time
+    let hasListener = false;
+    window.displayRecords = function () {
+      document.getElementById("allRecords").innerHTML = ""; // Clear previous records
+      document.getElementById("averageScreenTime").innerHTML = ""; // Corrected ID for average screen time
+
+      let totalScreenTime = 0;
+      let recordCount = 0;
+
+      // Ensure the listener is only added once 
+      if (!hasListener) {
+        onChildAdded(myDB, function (data) {
+          if (data && data.val) {
+            const record = data.val();
+            const screenTime = parseFloat(record.screenTime); // Corrected variable to `screenTime`
+            const recordDisplay = (record.screenTime || "No Screen Time") + " " + (record.yesno || "No Response");            
+           
+            // Add to valid screen time to total and update count
+            if (!isNaN(screenTime)) {
+              totalScreenTime += screenTime;
+              recordCount++;
+            }
+
+            // Calculate and display the average
+            const averageScreenTime = recordCount > 0 ? (totalScreenTime / recordCount).toFixed(2) : "No Screen Time Available";
+            document.getElementById("averageScreenTime").innerHTML = `Average Screen Time: ${averageScreenTime} hours`;
+          }
+        });
+        hasListener = true;
+      }
+    };
+  
+  </script>
+</body>
+</html>

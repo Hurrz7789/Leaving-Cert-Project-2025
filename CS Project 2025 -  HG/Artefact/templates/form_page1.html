@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Your Digital Day</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
+  </head>
+  
+  <body>
+    <div class="center_nav_bar">
+    <ul>
+      <li><a class="home_active_color" href="\">Welcome Page</a></li>
+      <li><a href="form1">Your Digital Day</a></li>
+      <li><a href="form2">Share Your Thoughts</a></li>
+    </ul>
+  </div>
+  <div class="box">
+    <div class="center">
+      <header>
+        <h1>What activities do you perform on your device everyday?</h1>
+      </header>
+      <main>
+        <form>
+          <input id="input1" type="text" maxlength="100" placeholder="Type your input here" > 
+        <button class="button" type="submit" id="submit-data">Submit Data</button>
+      </form>
+	  <h3>Below shows activities that other users perform on their devices for you to explore.</h3>
+      <section>
+        <textarea rows="20" cols="50" id="display"></textarea>
+      </section>
+  </div>
+</div>
+    </main>      
+  </body>
+</html>
+
+<script src="https://www.gstatic.com/firebasejs/8.4.0/firebase.js"></script>
+<script> 
+
+// configuration code from my Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCQ1A27_IyJIXf2DbZc6h3qfLF-h7139MA",
+  authDomain: "cs-project-2025-e51b0.firebaseapp.com",
+  databaseURL: "https://cs-project-2025-e51b0-default-rtdb.firebaseio.com",
+  projectId: "cs-project-2025-e51b0",
+  storageBucket: "cs-project-2025-e51b0.firebasestorage.app",
+  messagingSenderId: "1071706249506",
+  appId: "1:1071706249506:web:108b3385fb4ae2e259ad7b",
+  measurementId: "G-TL83WCVG9C"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Reference to database   
+const myDBCxn = firebase.database().ref('/form1');
+// Get the submit button and add a click event listener
+const btn = document.getElementById("submit-data");
+btn.addEventListener("click", saveform1);
+
+
+// Function to save data from the form to my database
+function saveform1() {
+  const form1Field = document.getElementById("input1");
+  const form1FieldValue = form1Field.value;
+  // Display an alert on users screen with entered value
+  alert(form1FieldValue + " has been entered. ");
+    // Clear the form  
+  form1Field.value = ''; // reset the field
+  form1Field.focus();   // set focus
+  
+     
+  // Save data to Firebase
+  const data = myDBCxn.push();
+  data.set( {form1: form1FieldValue
+            });
+} 
+ // Listen for new data and display it 
+myDBCxn.on("child_added", displayData);
+
+function displayData(data, prevChildKey) {
+    const datapoint = data.val();
+    document.getElementById("display").value += datapoint.form1 + "\n";
+	
+}
+
+</script>

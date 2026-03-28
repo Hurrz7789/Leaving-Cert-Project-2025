@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Welcome Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheet.css') }}">
+    <script src='https://cdn.plot.ly/plotly-2.35.2.min.js'></script>
+  </head>
+  <body>
+    <main>
+      <div class="center_nav_bar">
+        <ul>
+          <li><a class="home_active_color" href="\">Welcome Page</a></li>
+          <li><a href="form1">Your Digital Day</a></li>
+          <li><a href="form2">Share Your Thoughts</a></li>
+        </ul>
+      </div>
+
+      <div class="center2">
+        <h1>Data Analysis 1 - Average Screen time for Focus Group</h1>
+        <div class="container">
+          <img src="{{url_for('static', filename='data_analysis_1.png')}}" alt="Graph 1" class="image center2">
+          
+          <div class="overlay">
+            <div class="text">
+              <b>Average Screen Time for Focus Group (700 users)</b> <br/>
+              10-19 years: 5.1 (hrs/day) <br/>
+              20-29 years: 5.2 (hrs/day) <br/>
+              30-39 years: 5.3 (hrs/day) <br/>
+              40-49 years: 5.3 (hrs/day) <br/>
+              50-60 years: 5.4 (hrs/day)
+            </div>
+          </div>
+        </div>
+
+        <h1>Data Analysis 2 - Mainstream Operating System</h1>
+        
+        <!-- Plotly Graph -->
+        <div id="plotygraph" style="width: 100%; height: 500px;"></div>
+
+        <!-- Informed Decision Heading -->
+        <h1 style="margin-top: 30px;">Informed Decision</h1>
+
+        <!-- Table to display results   -->
+        <table>
+          <tr>
+            <th>Device Model</th>
+            <th>Battery Drain in (mAh)</th>
+          </tr>
+          <tr>
+            <td>Google Pixel</td>
+            <td>1476</td>
+          </tr>
+          <tr>
+            <td>Samsung</td>
+            <td>1505</td>
+          </tr>
+          <tr>
+            <td>iPhone</td>
+            <td>1590</td>
+          </tr>
+          <tr>
+            <td>OnePlus</td>
+            <td>1524</td>
+          </tr>
+          <tr>
+            <td>Xiaomi Mi</td>
+            <td>1529</td>
+          </tr>
+        </table>
+
+    <p>
+      When it comes to choosing a smartphone, battery life is often one of the most important factors to consider. 
+      Different devices offer varying levels of battery efficiency, depending on both their battery capacity and how much power they consume daily.
+      The table above displays 5 device models conducted from a focus group of 700 users. It shows the average battery drain (in mAh) per user.
+      The brand with the highest battery drain is iPhone.
+      if you're a heavy user who spends a lot of time gaming or streaming, you might prefer a device like the iPhone, which offers higher performance.
+      The brand with the lowest battery drain is Google Pixel. 
+      If you are opting for a device with low battery drain, such as the Google Pixel, can ensure that the phone lasts longer throughout the day
+    </p>
+
+	
+	</div>
+    </main>
+
+    <script>
+      const list1 = JSON.parse('{{ list1 | safe }}');
+      var list2 = JSON.parse("{{ list2 }}");
+      var trace1 = {
+        x: list1,
+        y: list2,
+        type: 'bar',
+        text: [
+          '83% of users in this age-group use Android and the remaining 17% use IOS.',
+          '80% of users in this age-group use Android and the remaining 20% use IOS.',
+          '77% of users in this age-group use Android and the remaining 23% use IOS.',
+          '82% of users in this age-group use Android and the remaining 18% use IOS.',
+          '77% of users in this age-group use Android and the remaining 23% use IOS.'
+        ],
+        hovertemplate: '%{x}: %{y}%<br>%{text}',  // Shows x, y value and custom text on hover
+        marker: {
+          color: 'rgb(129, 151, 195)'
+        }
+      };
+
+      var data = [trace1];
+
+      var layout = {
+        title: {
+          text: 'Focus Group (700 users): Most Used Operating System' // Title of Graph
+        },
+        font: {
+          family: 'Cambria, Cochin, Georgia, Times, Times New Roman, serif' // Font used
+        },
+        showlegend: false,
+        xaxis: {
+          tickangle: -45
+        },
+        yaxis: {
+          zeroline: false,
+          gridwidth: 2
+        },
+        bargap: 0.08,
+        barcornerradius: 20 
+      };
+
+      Plotly.newPlot('plotygraph', data, layout);
+    </script>
+  </body>
+</html>

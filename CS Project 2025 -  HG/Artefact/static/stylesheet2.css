@@ -1,0 +1,106 @@
+@charset "UTF-8";
+body {
+    background-image: url("abstractWP.jpg");
+    background-size: cover;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    text-align: center;
+ }
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+}
+li {
+    display: inline;
+}
+li a {
+    text-decoration: none;
+    width: 80px;
+    background-color: rgb(80, 96, 129);
+    color:rgb(255, 255, 255);
+    padding:8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+li a:hover {
+    background-color: rgb(255, 255, 255); 
+    color: rgb(56, 73, 108);
+
+}
+li a.home_active_color {
+    background-color: rgb(45, 59, 88);
+    color: rgb(255, 255, 255);
+
+}
+.center_nav_bar {
+    text-align: center;
+    color: rgb(242, 236, 236);
+    margin-top: 15px;
+}
+.container {
+    position: relative;
+    width: 100%;
+  }
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    text-align: center;
+    color: rgb(80, 96, 129);
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+
+}
+.button {
+    background-color: rgb(56, 73, 108); 
+    border-radius: 7px;
+    color: rgb(241, 233, 233);
+    padding: 9px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-family: Roboto;
+    margin: 7px 1px;
+    cursor: pointer;
+    border: none;
+}
+.box{
+    color:rgb(255, 255, 255);
+    width: 570px;
+    height: 740px;
+    border: 1px solid rgb(255, 255, 255);
+    padding: 20px;
+    margin: auto;
+    margin-top: 50px;
+    background-color: rgb(255, 255, 255);
+}
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    font-size: 15px;
+    display: inline-block;
+    border: 1px solid #a6a3a3;
+    background-color: rgb(242, 234, 234);
+    border-radius: 4px;
+    box-sizing: border-box;
+} 
+.inner_box{
+    height: 120px; 
+    overflow-y: auto; 
+    padding: 15px;
+    border: 1px solid #ccc; 
+    background-color: rgb(218, 215, 220);
+}
+  
